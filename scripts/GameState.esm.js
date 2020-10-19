@@ -6,7 +6,7 @@ export class GameState {
 		let _playerScores = 0;
 		let _gameBoard = diamonds.map(({x, y, row, column, kind}) => new Diamond(x, y, row, column, kind, diamondsSpriteImage));
 	
-		this._pointsToWin = pointsToWin;
+		this.isGamePaused = false;
 		this._level = level;
 
 	

@@ -15,14 +15,14 @@ class Loader extends Common {
 
 	bindToElements() {
 		this.currentElement = this.bindToElement(LOAD_CURRENT_ID);
-		this.totalElement.textContent = this.bindToElement(LOAD_TOTAL_ID);
+		this.totalElement = this.bindToElement(LOAD_TOTAL_ID);
 	}
 
 	loadImage(imageUrl) {
 		this.changeVisibilityScreen(this.element, VISIBLE_SCREEN);
 		this.isAllLoaded = false;
 		this.totalCounter++;
-		this.totalElement = this.totalCounter;
+		this.totalElement.textContent = this.totalCounter;
 		const image = new Image();
 
 		image.src = imageUrl;
