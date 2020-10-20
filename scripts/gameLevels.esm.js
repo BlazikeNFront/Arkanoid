@@ -5,8 +5,6 @@ export const EMPTY_BLOCK = 99;
 export const gameLevels = [
 	{
 		level: 1,
-		numberOfMovements: 30,
-		pointsToWin: 7000,
 		board: [
 			{x: 0, y: 0, kind: 0},
 			{x: 1, y: 0, kind: 0},
