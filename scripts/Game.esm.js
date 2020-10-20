@@ -1,11 +1,10 @@
 import { Common, VISIBLE_SCREEN } from './Common.esm.js';
 import { DATALOADED_EVENT_NAME } from './Loader.esm.js';
-import { gameLevels } from './gameLevels.esm.js';
 import { canvas } from './Canvas.esm.js';
 import { media } from './Media.esm.js';
 import { GameState } from './GameState.esm.js';
 import { Sprite } from '/scripts/Sprite.esm.js';
-import { resultScreen } from './ResultScreen.esm.js';
+import { resultScreen } from '/scripts/ResultScreen.esm.js';
 import { userData } from './UserData.esm.js';
 import { mainMenu } from './MainMenu.esm.js';
 import { Paddle } from '/scripts/paddle.js';
@@ -21,6 +20,7 @@ class Game extends Common {
 	}
 
 	playLevel(level) {
+		
 		window.removeEventListener(DATALOADED_EVENT_NAME, this.playLevel);
 
 
@@ -29,7 +29,7 @@ class Game extends Common {
 		this.paddle = new Paddle()
 		this.ball = new Ball();
 		this.gameState = { isGamePaused :false};
-		// this.gameState = new GameState();
+		 this.gameState = new GameState(level);
 		this.changeVisibilityScreen(canvas.element, VISIBLE_SCREEN);
 		this.changeVisibilityScreen(mainMenu.miniSettingsLayerElement, VISIBLE_SCREEN);
 		media.isInLevel = true;
@@ -40,6 +40,7 @@ class Game extends Common {
 	animate() {
 		this.ball.moveAndCheckCollision();
 		this.handleKeyboardClick();
+		this.checkCollisionBallWithPaddle();
 		this.drawSprites();
 		this.checkEndOfGame();
 	}
@@ -75,12 +76,32 @@ class Game extends Common {
 
 	}
 
+	checkCollisionBallWithPaddle(){
+
+		const {dx,dy} = this.ball;
+
+		if(dy <  0) {
+			return 
+		}
+
+
+		const vector = {dx, dy }
+
+		if(this.ball.checkCollisionWithAnotherSprite(vector, this.paddle)){
+			this.ball.dy = -(Math.floor(Math.random() *3)+3);
+		}
+	}
+
+
+
 	drawSprites(){
 		this.background.draw(0, 1.25);
+		this.gameState.getGameBoard().forEach(block => block.draw());
 		this.ball.draw();
 		this.paddle.draw();
 	}
 
+	
 
 
 
@@ -89,39 +110,13 @@ class Game extends Common {
 			media.isInLevel = false;
 			media.stopBackgroundMusic();
 
-			resultScreen.viewResultScreen(true);
+			resultScreen.viewResultScreen(false);
 		} else {
 			this.animationFrame = window.requestAnimationFrame(() => this.animate());
 		}
 	}
 
-	swap(firstDiamond, secondDiamond) {
-		[
-			firstDiamond.kind,
-			firstDiamond.alpha,
-			firstDiamond.match,
-			firstDiamond.x,
-			firstDiamond.y,
-			secondDiamond.kind,
-			secondDiamond.alpha,
-			secondDiamond.match,
-			secondDiamond.x,
-			secondDiamond.y,
-		] = [
-			secondDiamond.kind,
-			secondDiamond.alpha,
-			secondDiamond.match,
-			secondDiamond.x,
-			secondDiamond.y,
-			firstDiamond.kind,
-			firstDiamond.alpha,
-			firstDiamond.match,
-			firstDiamond.x,
-			firstDiamond.y,
-		];
-
-		this.gameState.setIsMoving(true);
-	}
+	
 }
 
 export const game = new Game();

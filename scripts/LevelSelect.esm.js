@@ -44,8 +44,9 @@ class LevelSelect extends Common {
 	}
 
 	loadLevel(level) {
+		const levelNumber = Number(level) ;
 		if (media.spriteImage  && media.backgroundMusic ) {
-			game.playLevel(level);
+			game.playLevel(levelNumber);
 			return;
 		}
 
@@ -59,7 +60,7 @@ class LevelSelect extends Common {
 			media.backgroundMusic = loader.loadSound('sounds/music-background.mp3');
 		}
 
-		window.addEventListener(DATALOADED_EVENT_NAME, () => game.playLevel(level));
+		window.addEventListener(DATALOADED_EVENT_NAME, () => game.playLevel(levelNumber));
 	}
 }
 

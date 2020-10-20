@@ -1,6 +1,7 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from '/scripts/Canvas.esm';
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from '/scripts/Canvas.esm.js';
 import { Sprite } from '/scripts/Sprite.esm.js'
 import { PADDLE_HEIGHT } from '/scripts/paddle.js';
+import { media } from './Media.esm.js';
 const BALL_START_X_SPRITE = 232;
 const BALL_SIZE = 22;
 
@@ -32,9 +33,9 @@ revertYDirection(){
     }
 
     moveAndCheckCollision(){
-        this.x +=this.dx;
+        this.x +=this.dx/5;
 
-        this.y += this.dy;
+        this.y += this.dy/5;
         
         if(this.x < 0 || this.x > CANVAS_WIDTH - this.width){
             this.revertXDirection();
