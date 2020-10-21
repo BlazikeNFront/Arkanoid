@@ -64,7 +64,7 @@ export class Sprite {
 		:this.x+this.width
 
 		const collisionPointY = vector.dy < 0
-		? thix.y
+		? this.y
 		: this.y+this.height;
 		return [collisionPointX,collisionPointY];
 		

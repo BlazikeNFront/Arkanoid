@@ -32,10 +32,31 @@ revertYDirection(){
     this.dy = -this.dy;
     }
 
-    moveAndCheckCollision(){
-        this.x +=this.dx/5;
+moveAndCheckCollision(blocks){
+        const {dx, dy} =  this;
+        const blocksToRemove = [];
+        const vector = {dx,dy};
 
-        this.y += this.dy/5;
+
+        this.x +=dx/5;
+        blocks.forEach((block,index) => {
+            if(this.checkCollisionWithAnotherSprite(vector, block)){
+                blocksToRemove.push(index);
+                this.revertXDirection();
+            }
+            
+        });
+        this.y += dy/5;
+        blocks.forEach((block,index) => {
+            if(this.checkCollisionWithAnotherSprite(vector, block)){
+                if(!blocksToRemove.includes(index)){
+                    blocksToRemove.push(index);
+                }
+
+                this.revertYDirection();
+            }
+            
+        });
         
         if(this.x < 0 || this.x > CANVAS_WIDTH - this.width){
             this.revertXDirection();
@@ -45,6 +66,14 @@ revertYDirection(){
             this.revertYDirection();
         }
 
+        blocksToRemove.forEach(index =>{
+            if(blocks[index].kind){
+                blocks[index].kind--
+            }
+            else {
+                blocks.splice(index,1);
+            }
+        } )
     }
 
     hadHitOnBottomEdge(){
