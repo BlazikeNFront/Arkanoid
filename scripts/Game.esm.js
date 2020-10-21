@@ -38,9 +38,11 @@ class Game extends Common {
 	}
 
 	animate() {
-		this.ball.moveAndCheckCollision();
 		this.handleKeyboardClick();
-		this.checkCollisionBallWithPaddle();
+		if(!this.gameState.isGamePaused){
+			this.ball.moveAndCheckCollision(this.gameState.getGameBoard());
+			this.checkCollisionBallWithPaddle();
+		}
 		this.drawSprites();
 		this.checkEndOfGame();
 	}
@@ -51,7 +53,8 @@ class Game extends Common {
 			return
 		}
 		if(key === KEY_CODE_PAUSE){
-			this.gameState.isGamePaused = true;
+		
+			this.gameState.isGamePaused = !this.gameState.isGamePaused;
 			keyboardController.clickedKey = null;
 			return
 		}
@@ -111,7 +114,13 @@ class Game extends Common {
 			media.stopBackgroundMusic();
 
 			resultScreen.viewResultScreen(false);
-		} else {
+		}else if(!this.gameState.getGameBoard().length){
+			media.isInLevel = false;
+			media.stopBackgroundMusic();
+			userData.addNewLevel(parseInt(this.gameState.level) + 1)
+			resultScreen.viewResultScreen(true);
+		} 
+			else {
 			this.animationFrame = window.requestAnimationFrame(() => this.animate());
 		}
 	}
